@@ -1,5 +1,7 @@
 export default defineNuxtConfig({
-  modules: ['../src/module'],
+  modules: ['@nuxthub/core', '../src/module'],
+
+  hub: { database: true },
 
   devtools: { enabled: true },
 
