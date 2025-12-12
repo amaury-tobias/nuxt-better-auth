@@ -35,15 +35,6 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
     nuxt.options.alias['#auth/server'] = serverConfigPath
     nuxt.options.alias['#auth/client'] = clientConfigPath
 
-    // Register alias for user's db schema - needed because NuxtHub's bundled schema loses exports
-    const dbSchemaPath = resolver.resolve(nuxt.options.rootDir, 'server/db/schema')
-    if (existsSync(`${dbSchemaPath}.ts`) || existsSync(`${dbSchemaPath}.js`)) {
-      nuxt.options.alias['#auth/db-schema'] = dbSchemaPath
-    }
-    else {
-      console.warn('[nuxt-better-auth] Missing server/db/schema.ts - required for database operations')
-    }
-
     // Add type template for #nuxt-better-auth module augmentation
     addTypeTemplate({
       filename: 'types/nuxt-better-auth.d.ts',
