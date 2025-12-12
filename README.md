@@ -5,6 +5,9 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
+> [!WARNING]
+> This library is a work in progress and not ready for production use.
+
 Nuxt module for [Better Auth](https://better-auth.com) with auto schema generation, route protection, and session management. Works with [NuxtHub](https://hub.nuxt.com) and future `@nuxt/db`.
 
 ## Features
