@@ -7,13 +7,5 @@ navigation: false
 ::landing-hero
 ::
 
-> Start here: `/getting-started/quickstart`.
-
 ::landing-features
 ::
-
-## Links
-
-- Module docs: `/getting-started/quickstart`
-- Better Auth providers & plugins: `/better-auth`
-- Better Auth docs: https://www.better-auth.com/docs

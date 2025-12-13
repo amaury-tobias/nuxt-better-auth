@@ -21,6 +21,13 @@ export default defineNuxtConfig({
     },
   },
 
+  mdc: {
+    highlight: {
+      theme: { default: 'vitesse-dark', dark: 'vitesse-dark', light: 'vitesse-light' },
+      langs: ['bash', 'json', 'js', 'ts', 'vue', 'html', 'css', 'yaml', 'sql'],
+    },
+  },
+
   devtools: { enabled: true },
 
   future: { compatibilityVersion: 4 },

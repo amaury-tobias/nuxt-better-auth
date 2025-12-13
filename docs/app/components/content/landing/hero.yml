@@ -1,69 +1,39 @@
-title: Nuxt Better Auth
-description: 'Seamless Better Auth integration for Nuxt. Auto-generated schemas, SSR-safe sessions, and declarative route protection.'
-links:
-  - label: Get Started
-    to: /getting-started/installation
-    icon: i-lucide-arrow-right
-    trailing: true
-  - label: GitHub
-    to: 'https://github.com/onmax/nuxt-better-auth'
-    target: _blank
-    color: neutral
-    variant: outline
-    icon: i-simple-icons-github
+tagline: Nuxt + Better Auth
+title: The most comprehensive authentication framework for Nuxt.
+description: Seamless Better Auth integration with auto-generated schemas, SSR-safe sessions, and declarative route protection.
 tabs:
-  - label: nuxt.config.ts
+  - name: nuxt.config.ts
     code: |
-      ```ts
       export default defineNuxtConfig({
-        modules: ['@nuxthub/core', '@onmax/nuxt-better-auth'],
+        modules: ['@onmax/nuxt-better-auth'],
         hub: { database: true },
         runtimeConfig: {
           oauth: { github: {}, google: {} },
         },
         routeRules: {
           '/dashboard/**': { auth: 'user' },
+          '/admin/**': { auth: 'admin' },
         },
       })
-      ```
-  - label: auth.config.ts
+  - name: auth.config.ts
     code: |
-      ```ts
-      import { twoFactor } from 'better-auth/plugins'
+      import { admin, twoFactor } from 'better-auth/plugins'
 
       export default defineServerAuth(() => ({
         socialProviders: {
           github: { clientId: '...', clientSecret: '...' },
           google: { clientId: '...', clientSecret: '...' },
-          // 33+ providers supported
         },
-        plugins: [twoFactor()], // 27+ plugins available
+        plugins: [admin(), twoFactor()],
       }))
-      ```
-  - label: auth.client.ts
+  - name: login.vue
     code: |
-      ```ts
-      import { twoFactorClient } from 'better-auth/client/plugins'
-      import { createAuthClient } from 'better-auth/vue'
+      <script setup lang="ts">
+      const { signIn } = useUserSession()
+      </script>
 
-      export function createAppAuthClient(baseURL: string) {
-        return createAuthClient({
-          baseURL,
-          plugins: [twoFactorClient()],
-        })
-      }
-      ```
-  - label: schema.ts
-    code: |
-      ```ts
-      // .nuxt/better-auth/schema.sqlite.ts (auto-generated)
-      export const user = sqliteTable('user', {
-        id: text('id').primaryKey(),
-        name: text('name').notNull(),
-        email: text('email').notNull().unique(),
-        emailVerified: integer('email_verified', { mode: 'boolean' }),
-        image: text('image'),
-        createdAt: integer('created_at', { mode: 'timestamp' }),
-        updatedAt: integer('updated_at', { mode: 'timestamp' }),
-      })
-      ```
+      <template>
+        <button @click="signIn.social({ provider: 'github' })">
+          Sign in with GitHub
+        </button>
+      </template>

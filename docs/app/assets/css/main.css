@@ -21,7 +21,78 @@ pre, code {
   font-family: var(--font-mono), ui-monospace, monospace;
 }
 
+/* Grid background pattern */
 @utility bg-grid {
   background-image: linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px);
   background-size: 32px 32px;
+}
+
+/* Brutalist button shadow */
+@utility shadow-brutalist {
+  box-shadow: 1px 1px rgba(0,0,0), 2px 2px rgba(0,0,0), 3px 3px rgba(0,0,0), 4px 4px rgba(0,0,0), 5px 5px 0px 0px rgba(0,0,0);
+}
+
+.dark .shadow-brutalist {
+  box-shadow: 1px 1px rgba(255,255,255), 2px 2px rgba(255,255,255), 3px 3px rgba(255,255,255), 4px 4px rgba(255,255,255), 5px 5px 0px 0px rgba(255,255,255);
+}
+
+/* Thin border utilities */
+@utility border-thin { border-width: 1.2px; }
+@utility border-l-thin { border-left-width: 1.2px; }
+@utility border-r-thin { border-right-width: 1.2px; }
+@utility border-t-thin { border-top-width: 1.2px; }
+@utility border-b-thin { border-bottom-width: 1.2px; }
+
+/* Code preview styling */
+.code-preview {
+  background: linear-gradient(to top right, var(--color-stone-100), var(--color-stone-200));
+}
+
+.dark .code-preview {
+  background: linear-gradient(to top right, rgba(28, 25, 23, 0.9), rgba(0, 0, 0, 0.9));
+}
+
+/* Traffic lights for code preview */
+.traffic-lights circle {
+  stroke: rgba(100, 116, 139, 0.3);
+}
+
+/* Gradient background for npm command */
+.gradient-box {
+  background: linear-gradient(145deg,
+    rgba(251, 191, 36, 0.1) 0%,
+    rgba(192, 132, 252, 0.1) 50%,
+    rgba(34, 211, 238, 0.1) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark .gradient-box {
+  background: linear-gradient(145deg,
+    rgba(251, 191, 36, 0.05) 0%,
+    rgba(192, 132, 252, 0.05) 50%,
+    rgba(34, 211, 238, 0.05) 100%
+  );
+}
+
+/* Hero code block styling */
+.hero-code pre {
+  background: transparent !important;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .hero-code pre {
+    font-size: 0.875rem;
+  }
+}
+
+.hero-code pre code {
+  background: transparent !important;
+}
+
+.hero-code .shiki {
+  background: transparent !important;
 }
