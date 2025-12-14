@@ -6,6 +6,16 @@
 :root {
   --ui-radius: 0.125rem;
   --ui-bg: var(--color-white);
+  --fd-sidebar-width: 268px;
+  --fd-toc-width: 268px;
+  --fd-content-width: 860px;
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --fd-sidebar-width: 286px;
+    --fd-toc-width: 286px;
+  }
 }
 
 .dark {

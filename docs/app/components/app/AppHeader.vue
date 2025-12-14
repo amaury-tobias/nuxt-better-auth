@@ -1,6 +1,10 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 const site = useSiteConfig()
+const route = useRoute()
+const { sidebarOpen, toggle: toggleSidebar } = useDocusSidebar()
+
+const isDocsPage = computed(() => route.path.startsWith('/getting-started') || route.path.startsWith('/core-concepts') || route.path.startsWith('/guides') || route.path.startsWith('/api') || route.path.startsWith('/troubleshooting') || route.path.startsWith('/better-auth'))
 
 const navLinks = [
   { name: 'docs', path: '/getting-started/quickstart' },
@@ -13,7 +17,7 @@ const navLinks = [
 <template>
   <UHeader :ui="{ container: 'max-w-full !px-0 h-14', root: 'border-b border-[var(--ui-border)] h-max', left: 'gap-0 h-full', right: 'gap-0 h-full' }" to="/" :title="appConfig.header?.title || site.name">
     <template #title>
-      <div class="flex items-center gap-3 px-5 border-r border-[var(--ui-border)] h-full">
+      <div class="header-logo">
         <!-- NuxtHub -->
         <div class="flex items-center gap-1.5">
           <svg width="48" height="32" viewBox="0 0 48 32" fill="none" class="h-4 w-auto" xmlns="http://www.w3.org/2000/svg">
@@ -61,6 +65,9 @@ const navLinks = [
         </li>
       </nav>
 
+      <!-- Docs sidebar toggle (mobile) -->
+      <UButton v-if="isDocsPage" color="neutral" variant="ghost" :icon="sidebarOpen ? 'i-lucide-x' : 'i-lucide-panel-left'" class="lg:hidden border-l border-[var(--ui-border)] h-full aspect-square rounded-none" @click="toggleSidebar" />
+
       <UContentSearchButton class="lg:hidden" />
 
       <ClientOnly>
@@ -97,3 +104,22 @@ const navLinks = [
     </template>
   </UHeader>
 </template>
+
+<style scoped>
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: var(--fd-sidebar-width, 268px);
+  height: 100%;
+  padding-inline: 1.25rem;
+  border-right: 1px solid var(--ui-border);
+  box-sizing: border-box;
+}
+
+@media (min-width: 1280px) {
+  .header-logo {
+    width: 286px;
+  }
+}
+</style>

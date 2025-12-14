@@ -18,6 +18,7 @@
     "nuxt": "^4.2.2"
   },
   "devDependencies": {
+    "@iconify-json/solar": "^1.2.5",
     "@rollup/plugin-yaml": "^4.1.2",
     "docus": "^5.4.0"
   }
