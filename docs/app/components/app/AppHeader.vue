@@ -4,6 +4,7 @@ const site = useSiteConfig()
 
 const navLinks = [
   { name: 'docs', path: '/getting-started/quickstart' },
+  { name: 'demo', path: 'https://demo.nuxt-better-auth.onmax.me', external: true },
   { name: 'better-auth', path: 'https://www.better-auth.com', external: true },
 ]
 </script>
