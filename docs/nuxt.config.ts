@@ -2,6 +2,7 @@ import yaml from '@rollup/plugin-yaml'
 
 export default defineNuxtConfig({
   extends: ['docus'],
+  modules: ['motion-v/nuxt'],
 
   css: ['~/assets/css/main.css'],
 
@@ -23,7 +24,7 @@ export default defineNuxtConfig({
 
   mdc: {
     highlight: {
-      theme: { default: 'vitesse-dark', dark: 'vitesse-dark', light: 'vitesse-light' },
+      theme: { default: 'synthwave-84', dark: 'synthwave-84', light: 'one-light' },
       langs: ['bash', 'json', 'js', 'ts', 'vue', 'html', 'css', 'yaml', 'sql'],
     },
   },
