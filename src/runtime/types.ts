@@ -2,7 +2,10 @@ import type { NitroRouteRules } from 'nitropack/types'
 import type { AuthSession, AuthUser } from './types/augment'
 
 // Re-export augmentable types
-export type { AuthSession, AuthUser, UserSessionComposable } from './types/augment'
+export type { AuthSession, AuthUser, ServerAuthContext, UserSessionComposable } from './types/augment'
+
+// Re-export better-auth types for $Infer access
+export type { Auth, InferSession, InferUser } from 'better-auth'
 
 export type AuthMode = 'guest' | 'user'
 

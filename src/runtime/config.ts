@@ -1,10 +1,9 @@
 import type { BetterAuthOptions } from 'better-auth'
 import type { ClientOptions } from 'better-auth/client'
+import type { ServerAuthContext } from './types/augment'
 
-export interface ServerAuthContext {
-  runtimeConfig: any
-  db?: any // optional in database-less mode
-}
+// Re-export for declaration merging with generated types
+export type { ServerAuthContext }
 
 export interface ClientAuthContext {
   siteUrl: string

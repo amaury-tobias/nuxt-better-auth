@@ -85,9 +85,9 @@ export function useUserSession() {
   type SignIn = NonNullable<AppAuthClient>['signIn']
   type SignUp = NonNullable<AppAuthClient>['signUp']
 
-  function wrapAuthMethod<T extends (...args: any[]) => Promise<any>>(method: T): T {
-    return (async (...args: any[]) => {
-      const [data, options] = args
+  function wrapAuthMethod<T extends (...args: unknown[]) => Promise<unknown>>(method: T): T {
+    return (async (...args: unknown[]) => {
+      const [data, options] = args as [unknown, { onSuccess?: (ctx: unknown) => void } | undefined]
       const originalOnSuccess = options?.onSuccess
 
       // If no onSuccess callback, pass options through unchanged
@@ -97,7 +97,7 @@ export function useUserSession() {
       // Wrap onSuccess to wait for session sync before calling
       const wrappedOptions = {
         ...options,
-        onSuccess: async (ctx: any) => {
+        onSuccess: async (ctx: unknown) => {
           await waitForSession()
           await originalOnSuccess(ctx)
         },

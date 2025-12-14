@@ -26,6 +26,12 @@ export interface AuthSession {
   userAgent?: string | null
 }
 
+// Server auth context - extended by generated types with hub:db types
+export interface ServerAuthContext {
+  runtimeConfig: Record<string, unknown>
+  db?: unknown
+}
+
 // Composable return type
 export interface UserSessionComposable {
   user: Ref<AuthUser | null>

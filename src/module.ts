@@ -100,7 +100,7 @@ declare module '#auth/secondary-storage' {
       getContents: () => `
 // Type augmentation support
 export * from '${resolver.resolve('./runtime/types/augment')}'
-export type { AuthMeta, AuthMode, AuthRouteRules, UserMatch, RequireSessionOptions } from '${resolver.resolve('./runtime/types')}'
+export type { AuthMeta, AuthMode, AuthRouteRules, UserMatch, RequireSessionOptions, Auth, InferUser, InferSession } from '${resolver.resolve('./runtime/types')}'
 `,
     })
 
@@ -110,6 +110,7 @@ export type { AuthMeta, AuthMode, AuthRouteRules, UserMatch, RequireSessionOptio
       getContents: () => `
 // Auto-generated types from auth.config.ts
 import type { InferUser, InferSession } from 'better-auth'
+import type { RuntimeConfig } from 'nuxt/schema'
 import type configFn from '${serverConfigPath}'
 
 type _Config = ReturnType<typeof configFn>
@@ -117,6 +118,10 @@ type _Config = ReturnType<typeof configFn>
 declare module '#nuxt-better-auth' {
   interface AuthUser extends InferUser<_Config> {}
   interface AuthSession { session: InferSession<_Config>['session'], user: InferUser<_Config> }
+  interface ServerAuthContext {
+    runtimeConfig: RuntimeConfig
+    ${hasDb ? `db: typeof import('hub:db')['db']` : ''}
+  }
 }
 `,
     })
@@ -270,4 +275,4 @@ async function setupBetterAuthSchema(nuxt: any, serverConfigPath: string) {
 
 // Re-export config helpers
 export { defineClientAuth, defineServerAuth } from './runtime/config'
-export type { AuthMeta, AuthMode, AuthRouteRules, AuthSession, AuthUser, RequireSessionOptions, UserMatch } from './runtime/types'
+export type { Auth, AuthMeta, AuthMode, AuthRouteRules, AuthSession, AuthUser, InferSession, InferUser, RequireSessionOptions, ServerAuthContext, UserMatch } from './runtime/types'

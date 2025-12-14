@@ -35,7 +35,7 @@ export async function serverAuth(): Promise<AuthInstance> {
 
   // Dynamic import hub:db only when using database
   let database: ReturnType<typeof drizzleAdapter> | undefined
-  let db: any
+  let db: unknown
   if (useDatabase) {
     const hubDb = await import('hub:db')
     db = hubDb.db
