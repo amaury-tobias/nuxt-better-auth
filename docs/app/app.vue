@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ContentNavigationItem, PageCollections } from '@nuxt/content'
 import { Analytics } from '@vercel/analytics/nuxt'
+import { SpeedInsights } from '@vercel/speed-insights/nuxt'
 
 const { locale, isEnabled } = useDocusI18n()
 const collectionName = computed(() => isEnabled.value ? `docs_${locale.value}` : 'docs')
@@ -31,4 +32,5 @@ provide('navigation', navigation)
   </ClientOnly>
 
   <Analytics />
+  <SpeedInsights />
 </template>
