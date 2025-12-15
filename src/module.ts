@@ -117,6 +117,16 @@ declare module '#nuxt-better-auth' {
     })
 
     addTypeTemplate({
+      filename: 'types/nuxt-better-auth-client.d.ts',
+      getContents: () => `
+import type { createAppAuthClient } from '${clientConfigPath}'
+declare module '#nuxt-better-auth' {
+  export type AppAuthClient = ReturnType<typeof createAppAuthClient>
+}
+`,
+    })
+
+    addTypeTemplate({
       filename: 'types/nuxt-better-auth-nitro.d.ts',
       getContents: () => `
 declare module 'nitropack/types' {
@@ -129,7 +139,7 @@ declare module 'nitropack/types' {
 
     // HMR
     nuxt.hook('builder:watch', async (_event, relativePath) => {
-      if (relativePath.includes('auth.config')) {
+      if (relativePath.includes('auth.config') || relativePath.includes('auth.client')) {
         await updateTemplates({ filter: t => t.filename.includes('nuxt-better-auth') })
       }
     })

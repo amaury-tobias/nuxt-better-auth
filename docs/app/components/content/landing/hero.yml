@@ -37,8 +37,6 @@ tabs:
           plugins: [adminClient(), twoFactorClient()],
         })
       }
-
-      export type AppAuthClient = ReturnType<typeof createAppAuthClient>
   - name: app/pages/login.vue
     code: |
       <script setup lang="ts">

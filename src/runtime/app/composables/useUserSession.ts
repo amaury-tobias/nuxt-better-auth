@@ -1,5 +1,4 @@
-import type { AppAuthClient } from '#auth/client'
-import type { AuthSession, AuthUser } from '#nuxt-better-auth'
+import type { AppAuthClient, AuthSession, AuthUser } from '#nuxt-better-auth'
 import { createAppAuthClient } from '#auth/client'
 import { computed, useRequestHeaders, useRuntimeConfig, useState, watch } from '#imports'
 import { consola } from 'consola'

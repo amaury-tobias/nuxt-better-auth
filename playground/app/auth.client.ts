@@ -8,5 +8,3 @@ export function createAppAuthClient(baseURL: string) {
     plugins: [adminClient(), passkeyClient()],
   })
 }
-
-export type AppAuthClient = ReturnType<typeof createAppAuthClient>
