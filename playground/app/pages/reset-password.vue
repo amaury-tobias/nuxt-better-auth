@@ -27,7 +27,7 @@ async function handleResetPassword() {
   }
 
   loading.value = true
-  const { error } = await client.resetPassword({ newPassword: password.value, token: token.value })
+  const { error } = await client!.resetPassword({ newPassword: password.value, token: token.value })
   loading.value = false
 
   if (error) {

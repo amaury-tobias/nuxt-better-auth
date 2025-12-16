@@ -10,7 +10,7 @@ const success = ref(false)
 
 async function handleRequestReset() {
   loading.value = true
-  const { error } = await client.forgetPassword({ email: email.value, redirectTo: '/reset-password' })
+  const { error } = await client!.requestPasswordReset({ email: email.value, redirectTo: '/reset-password' })
   loading.value = false
 
   if (error) {

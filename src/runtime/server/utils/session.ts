@@ -1,6 +1,6 @@
 import type { H3Event } from 'h3'
 import type { AuthSession, AuthUser, RequireSessionOptions } from '../../types'
-import { createError } from '#imports'
+import { createError } from 'h3'
 import { matchesUser } from '../../utils/match-user'
 
 interface FullSession { user: AuthUser, session: AuthSession }

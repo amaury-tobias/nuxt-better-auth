@@ -1,9 +1,9 @@
 import { createSecondaryStorage } from '#auth/secondary-storage'
 import createServerAuth from '#auth/server'
-import { useEvent, useRuntimeConfig } from '#imports'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { getRequestURL } from 'h3'
+import { useEvent, useRuntimeConfig } from 'nitropack/runtime'
 
 type AuthInstance = ReturnType<typeof betterAuth>
 let _auth: AuthInstance | undefined
@@ -31,7 +31,8 @@ export async function serverAuth(): Promise<AuthInstance> {
   const hubConfig = runtimeConfig.hub as { db?: { dialect: 'sqlite' | 'postgresql' | 'mysql' } } | undefined
 
   const useDatabase = authConfig?.useDatabase ?? !!hubConfig?.db
-  const dialect = hubConfig?.db?.dialect ?? 'sqlite'
+  const rawDialect = hubConfig?.db?.dialect ?? 'sqlite'
+  const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect as 'sqlite' | 'pg' | 'mysql'
 
   // Dynamic import hub:db only when using database
   let database: ReturnType<typeof drizzleAdapter> | undefined

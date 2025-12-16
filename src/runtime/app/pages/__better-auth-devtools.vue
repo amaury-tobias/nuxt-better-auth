@@ -233,11 +233,11 @@ function getAccountActions(row: AccountRow) {
             <UInput v-model="sessionsSearchRaw" placeholder="Search by user ID or IP..." icon="i-lucide-search" class="max-w-xs" />
             <div class="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
               <span>{{ sessionsData?.total ?? 0 }} sessions</span>
-              <UButton variant="ghost" size="xs" icon="i-lucide-refresh-cw" @click="refreshSessions" />
+              <UButton variant="ghost" size="xs" icon="i-lucide-refresh-cw" @click="() => refreshSessions()" />
             </div>
           </div>
 
-          <UAlert v-if="deleteConfirm" title="Delete session?" description="This will invalidate the session immediately." color="error" variant="soft" icon="i-lucide-alert-triangle" :actions="[{ label: 'Cancel', color: 'neutral', variant: 'outline', click: () => deleteConfirm = null }, { label: 'Delete', color: 'error', click: () => deleteSession(deleteConfirm!) }]" />
+          <UAlert v-if="deleteConfirm" title="Delete session?" description="This will invalidate the session immediately." color="error" variant="soft" icon="i-lucide-alert-triangle" :actions="[{ label: 'Cancel', color: 'neutral', variant: 'outline', onClick: () => { deleteConfirm = null } }, { label: 'Delete', color: 'error', onClick: () => deleteSession(deleteConfirm!) }]" />
 
           <p v-if="sessionsData?.error" class="text-destructive text-sm">
             {{ sessionsData.error }}
@@ -266,7 +266,7 @@ function getAccountActions(row: AccountRow) {
             <UInput v-model="usersSearchRaw" placeholder="Search by name or email..." icon="i-lucide-search" class="max-w-xs" />
             <div class="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
               <span>{{ usersData?.total ?? 0 }} users</span>
-              <UButton variant="ghost" size="xs" icon="i-lucide-refresh-cw" @click="refreshUsers" />
+              <UButton variant="ghost" size="xs" icon="i-lucide-refresh-cw" @click="() => refreshUsers()" />
             </div>
           </div>
 
@@ -297,7 +297,7 @@ function getAccountActions(row: AccountRow) {
             <UInput v-model="accountsSearchRaw" placeholder="Search by provider..." icon="i-lucide-search" class="max-w-xs" />
             <div class="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
               <span>{{ accountsData?.total ?? 0 }} accounts</span>
-              <UButton variant="ghost" size="xs" icon="i-lucide-refresh-cw" @click="refreshAccounts" />
+              <UButton variant="ghost" size="xs" icon="i-lucide-refresh-cw" @click="() => refreshAccounts()" />
             </div>
           </div>
 

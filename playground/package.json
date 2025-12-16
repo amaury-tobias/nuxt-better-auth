@@ -8,11 +8,12 @@
     "generate": "nuxi generate"
   },
   "dependencies": {
-    "@better-auth/passkey": "^1.4.6",
+    "@better-auth/passkey": "^1.4.7",
     "@nuxt/fonts": "^0.12.1",
     "@nuxt/ui": "^4.2.1",
     "@nuxthub/core": "^0.10.1",
-    "nuxt": "^4.2.2"
+    "nuxt": "^4.2.2",
+    "nuxt-qrcode": "^0.4.8"
   },
   "devDependencies": {
     "@libsql/client": "^0.15.15",

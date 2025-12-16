@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ['@nuxthub/core', '@nuxt/ui', '../src/module'],
+  modules: ['@nuxthub/core', '@nuxt/ui', 'nuxt-qrcode', '../src/module'],
 
   css: ['~/assets/css/main.css'],
 
@@ -27,6 +27,8 @@ export default defineNuxtConfig({
     '/login': { auth: 'guest' },
     '/register': { auth: 'guest' },
     '/forget-password': { auth: 'guest' },
+    '/two-factor': { auth: false },
+    '/two-factor/otp': { auth: false },
   },
 
   compatibilityDate: '2025-01-01',

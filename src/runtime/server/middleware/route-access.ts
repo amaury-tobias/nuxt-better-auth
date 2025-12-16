@@ -1,9 +1,10 @@
 import type { AuthMeta, AuthMode, AuthRouteRules } from '../../types'
-import { createError, defineEventHandler, getRequestPath, getRouteRules } from '#imports'
+import { createError, defineEventHandler, getRequestURL } from 'h3'
+import { getRouteRules } from 'nitropack/runtime'
 import { matchesUser } from '../../utils/match-user'
 
 export default defineEventHandler(async (event) => {
-  const path = getRequestPath(event)
+  const path = getRequestURL(event).pathname
 
   if (!path.startsWith('/api/'))
     return

@@ -29,7 +29,7 @@ export interface AuthSession {
 // Server auth context - extended by generated types with hub:db types
 export interface ServerAuthContext {
   runtimeConfig: Record<string, unknown>
-  db?: unknown
+  db: unknown
 }
 
 // Composable return type
