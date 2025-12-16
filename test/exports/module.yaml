@@ -1,0 +1,4 @@
+.:
+  default: function
+  defineClientAuth: function
+  defineServerAuth: function
