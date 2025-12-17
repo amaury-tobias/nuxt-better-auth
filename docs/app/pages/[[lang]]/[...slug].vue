@@ -55,8 +55,8 @@ const editLink = computed(() => {
       <DocsPageFooter :surround="surround" :edit-link="editLink" />
     </UPageBody>
 
-    <template v-if="page?.body?.toc?.links?.length" #right>
-      <UContentToc highlight :title="appConfig.toc?.title || t('docs.toc')" :links="page.body?.toc?.links">
+    <template #right>
+      <UContentToc v-if="page?.body?.toc?.links?.length" highlight :title="appConfig.toc?.title || t('docs.toc')" :links="page.body?.toc?.links">
         <template #bottom>
           <DocsAsideRightBottom />
         </template>

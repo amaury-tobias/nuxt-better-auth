@@ -37,7 +37,7 @@ const items = features.items as { title: string, description: string, icon: stri
             <div class="mt-2">
               <p class="mt-2 text-sm text-left text-muted">
                 {{ feature.description }}
-                <NuxtLink class="ml-2 underline" to="/getting-started/installation">
+                <NuxtLink class="underline" to="/getting-started/installation">
                   Learn more
                 </NuxtLink>
               </p>
