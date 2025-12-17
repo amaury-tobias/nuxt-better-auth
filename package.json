@@ -31,7 +31,6 @@
     "dev:prepare": "nuxt-module-build build --stub && nuxi prepare playground",
     "dev:docs": "nuxi dev docs",
     "build:docs": "nuxi build docs",
-    "prepare": "nuxt-module-build build --stub && nuxi prepare playground",
     "release": "pnpm lint && pnpm test && pnpm prepack && changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
