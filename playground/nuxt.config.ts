@@ -5,6 +5,14 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      title: 'Nuxt Better Auth Demo',
+      meta: [
+        { name: 'description', content: 'Official demo showcasing Better Auth features with Nuxt: email/password, social auth, passkeys, 2FA, admin panel.' },
+        { property: 'og:title', content: 'Nuxt Better Auth Demo' },
+        { property: 'og:description', content: 'Official demo showcasing Better Auth features with Nuxt.' },
+        { property: 'og:image', content: '/og.png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+      ],
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     },
   },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { client } = useUserSession()
+const { client, user } = useUserSession()
 const toast = useToast()
 
 // Type assertion for admin plugin methods
@@ -8,20 +8,35 @@ const adminClient = client as typeof client & {
   admin: { listUsers: AsyncFn, createUser: AsyncFn, banUser: AsyncFn, unbanUser: AsyncFn, impersonateUser: AsyncFn, removeUser: AsyncFn }
 }
 
+// Authorization
+const isAdmin = computed(() => (user.value as any)?.role === 'admin')
+const authError = ref<string | null>(null)
+
 // Users
 const users = ref<any[]>([])
 const loading = ref(true)
 const search = ref('')
 
 async function loadUsers() {
+  if (!isAdmin.value) {
+    authError.value = 'You need admin privileges to access this page'
+    loading.value = false
+    return
+  }
   loading.value = true
+  authError.value = null
   try {
     const res = await adminClient?.admin.listUsers({
       query: { limit: 50, sortBy: 'createdAt', sortDirection: 'desc' },
     })
     users.value = res?.data?.users || []
   }
-  catch { users.value = [] }
+  catch (e: any) {
+    if (e.message?.includes('Unauthorized') || e.message?.includes('admin')) {
+      authError.value = 'You need admin privileges to access this page'
+    }
+    users.value = []
+  }
   loading.value = false
 }
 
@@ -142,7 +157,14 @@ onMounted(loadUsers)
 
 <template>
   <div class="max-w-4xl mx-auto py-8 px-4">
-    <UCard>
+    <!-- Unauthorized Error -->
+    <UAlert v-if="authError" color="error" variant="soft" icon="i-lucide-shield-x" :title="authError" class="mb-4">
+      <template #description>
+        Please sign in with an admin account to access the admin dashboard.
+      </template>
+    </UAlert>
+
+    <UCard v-if="!authError">
       <template #header>
         <div class="flex justify-between items-center gap-4">
           <h1 class="text-xl font-semibold">
@@ -195,7 +217,7 @@ onMounted(loadUsers)
     </UCard>
 
     <!-- Create User Modal -->
-    <UModal v-model:open="createOpen">
+    <UModal v-if="!authError" v-model:open="createOpen">
       <template #header>
         Create New User
       </template>
@@ -221,7 +243,7 @@ onMounted(loadUsers)
     </UModal>
 
     <!-- Ban User Modal -->
-    <UModal v-model:open="banOpen">
+    <UModal v-if="!authError" v-model:open="banOpen">
       <template #header>
         Ban User
       </template>

@@ -9,6 +9,12 @@ const getResend = () => _resend || (_resend = new Resend(process.env.RESEND_API_
 
 export default defineServerAuth(() => ({
   appName: 'Nuxt Better Auth Playground',
+  socialProviders: {
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    },
+  },
   plugins: [
     admin(),
     passkey(),

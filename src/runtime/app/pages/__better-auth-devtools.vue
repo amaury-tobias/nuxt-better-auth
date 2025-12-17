@@ -225,7 +225,7 @@ function getAccountActions(row: AccountRow) {
     </header>
 
     <!-- Tabs -->
-    <UTabs :items="tabs" class="w-full" :ui="{ list: 'border-b border-border rounded-none bg-transparent justify-start', trigger: 'rounded-none data-[state=active]:shadow-none flex-none' }">
+    <UTabs :items="tabs" class="w-full" :ui="{ list: 'border-b border-border rounded-none bg-transparent justify-start', trigger: 'rounded-none data-[state=active]:shadow-none data-[state=active]:bg-[var(--tab-active-bg)] data-[state=active]:text-foreground flex-none text-muted-foreground' }">
       <!-- Sessions Tab -->
       <template #sessions>
         <div class="p-4 space-y-4">
@@ -461,6 +461,7 @@ function getAccountActions(row: AccountRow) {
   --muted-foreground: hsl(25 5.3% 44.7%);
   --border: hsl(20 5.9% 90%);
   --destructive: hsl(0 84.2% 60.2%);
+  --tab-active-bg: hsl(20 5.9% 93%);
 }
 
 .dark {
@@ -471,6 +472,7 @@ function getAccountActions(row: AccountRow) {
   --muted-foreground: hsl(24 5.4% 63.9%);
   --border: hsl(12 6.5% 15.1%);
   --destructive: hsl(0 62.8% 30.6%);
+  --tab-active-bg: hsl(12 6.5% 15.1%);
 }
 
 .bg-background { background-color: var(--background); }

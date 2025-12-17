@@ -2,9 +2,9 @@ import { fileURLToPath } from 'node:url'
 import { $fetch, setup } from '@nuxt/test-utils/e2e'
 import { describe, expect, it } from 'vitest'
 
-describe('database-less mode', async () => {
+describe('no-db mode (NuxtHub without database)', async () => {
   await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/dbless', import.meta.url)),
+    rootDir: fileURLToPath(new URL('./fixtures/no-db', import.meta.url)),
   })
 
   it('renders home page without database', async () => {
