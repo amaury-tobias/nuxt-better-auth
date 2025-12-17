@@ -11,7 +11,7 @@ tabs:
           '/admin/**': { auth: 'admin' },
         },
       })
-  - name: server/auth.config.ts
+  - name: auth.config.ts
     code: |
       import { admin, twoFactor } from 'better-auth/plugins'
 
@@ -22,7 +22,7 @@ tabs:
         },
         plugins: [admin(), twoFactor()],
       }))
-  - name: auth.client.ts
+  - name: client-auth.config.ts
     code: |
       import { adminClient, twoFactorClient } from 'better-auth/client/plugins'
       import { createAuthClient } from 'better-auth/vue'

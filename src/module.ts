@@ -4,7 +4,7 @@ import type { AuthRouteRules } from './runtime/types'
 import { existsSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { addComponentsDir, addImportsDir, addPlugin, addServerHandler, addServerImportsDir, addServerScanDir, addTemplate, addTypeTemplate, createResolver, defineNuxtModule, extendPages, hasNuxtModule, updateTemplates } from '@nuxt/kit'
-import { consola } from 'consola'
+import { consola as _consola } from 'consola'
 import { defu } from 'defu'
 import { join } from 'pathe'
 import { createRouter, toRouteMatcher } from 'radix3'
@@ -12,6 +12,8 @@ import { setupDevTools } from './devtools'
 import { generateDrizzleSchema, loadUserAuthConfig } from './schema-generator'
 
 import './types/hooks'
+
+const consola = _consola.withTag('nuxt-better-auth')
 
 export type { BetterAuthModuleOptions } from './runtime/config'
 
@@ -21,16 +23,16 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
   async setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    const serverConfigPath = resolver.resolve(nuxt.options.serverDir, 'auth.config')
-    const clientConfigPath = resolver.resolve(nuxt.options.srcDir, 'auth.client')
+    const serverConfigPath = resolver.resolve(nuxt.options.rootDir, 'auth.config')
+    const clientConfigPath = resolver.resolve(nuxt.options.srcDir, 'client-auth.config')
 
     const serverConfigExists = existsSync(`${serverConfigPath}.ts`) || existsSync(`${serverConfigPath}.js`)
     const clientConfigExists = existsSync(`${clientConfigPath}.ts`) || existsSync(`${clientConfigPath}.js`)
 
     if (!serverConfigExists)
-      throw new Error(`[@onmax/nuxt-better-auth] Missing ${serverConfigPath}.ts - create with defineServerAuth()`)
+      throw new Error('[nuxt-better-auth] Missing auth.config.ts in project root - create with defineServerAuth()')
     if (!clientConfigExists)
-      throw new Error(`[@onmax/nuxt-better-auth] Missing ${clientConfigPath}.ts - export createAppAuthClient()`)
+      throw new Error('[nuxt-better-auth] Missing client-auth.config.ts - export createAppAuthClient()')
 
     const hasNuxtHub = hasNuxtModule('@nuxthub/core', nuxt)
     const hub = hasNuxtHub ? (nuxt.options as unknown as Record<string, unknown>).hub as { db?: boolean | string | object, kv?: boolean } | undefined : undefined
@@ -38,7 +40,7 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
 
     let secondaryStorageEnabled = options.secondaryStorage ?? false
     if (secondaryStorageEnabled && (!hasNuxtHub || !hub?.kv)) {
-      consola.warn('[nuxt-better-auth] secondaryStorage requires @nuxthub/core with hub.kv: true. Disabling.')
+      consola.warn('secondaryStorage requires @nuxthub/core with hub.kv: true. Disabling.')
       secondaryStorageEnabled = false
     }
 
@@ -137,7 +139,7 @@ declare module 'nitropack/types' {
 
     // HMR
     nuxt.hook('builder:watch', async (_event, relativePath) => {
-      if (relativePath.includes('auth.config') || relativePath.includes('auth.client')) {
+      if (relativePath.includes('auth.config') || relativePath.includes('client-auth.config')) {
         await updateTemplates({ filter: t => t.filename.includes('nuxt-better-auth') })
       }
     })
@@ -204,7 +206,7 @@ async function setupBetterAuthSchema(nuxt: any, serverConfigPath: string) {
   const hub = nuxt.options.hub as any
   const dialect = typeof hub.db === 'string' ? hub.db : hub.db?.dialect
   if (!dialect || !['sqlite', 'postgresql', 'mysql'].includes(dialect)) {
-    consola.warn(`[nuxt-better-auth] Unsupported database dialect: ${dialect}`)
+    consola.warn(`Unsupported database dialect: ${dialect}`)
     return
   }
 
@@ -231,10 +233,10 @@ async function setupBetterAuthSchema(nuxt: any, serverConfigPath: string) {
 
       addTemplate({ filename: `better-auth/schema.${dialect}.ts`, getContents: () => schemaCode, write: true })
 
-      consola.info(`[nuxt-better-auth] Generated ${dialect} schema with ${Object.keys(tables).length} tables`)
+      consola.info(`Generated ${dialect} schema with ${Object.keys(tables).length} tables`)
     }
     catch (error) {
-      consola.error('[nuxt-better-auth] Failed to generate schema:', error)
+      consola.error('Failed to generate schema:', error)
     }
   })
 
