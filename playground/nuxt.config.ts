@@ -29,6 +29,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     betterAuthSecret: 'dev-secret-change-in-production-32+',
+    github: {
+      clientId: '',
+      clientSecret: '',
+    },
   },
 
   auth: {
