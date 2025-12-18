@@ -6,7 +6,7 @@ import { matchesUser } from '../../utils/match-user'
 interface FullSession { user: AuthUser, session: AuthSession }
 
 export async function getUserSession(event: H3Event): Promise<FullSession | null> {
-  const auth = await serverAuth()
+  const auth = await serverAuth(event)
   const session = await auth.api.getSession({ headers: event.headers })
   return session as FullSession | null
 }

@@ -4,7 +4,7 @@ import { createSecondaryStorage } from '#auth/secondary-storage'
 import createServerAuth from '#auth/server'
 import { betterAuth } from 'better-auth'
 import { getRequestURL } from 'h3'
-import { useEvent, useRuntimeConfig } from 'nitropack/runtime'
+import { useRuntimeConfig } from 'nitropack/runtime'
 
 type AuthInstance = ReturnType<typeof betterAuth>
 
@@ -20,9 +20,7 @@ function getBaseURL(event: H3Event, siteUrl?: string): string {
   return getRequestURL(event).origin
 }
 
-export async function serverAuth(): Promise<AuthInstance> {
-  const event = useEvent()
-
+export async function serverAuth(event: H3Event): Promise<AuthInstance> {
   // Request-scoped singleton (like @nuxtjs/supabase pattern)
   if (event.context._betterAuth)
     return event.context._betterAuth
