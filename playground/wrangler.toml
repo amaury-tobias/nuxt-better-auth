@@ -1,3 +1,9 @@
 name = "nuxt-better-auth-demo"
 compatibility_date = "2025-01-01"
 compatibility_flags = [ "nodejs_compat" ]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nuxt-better-auth-demo"
+database_id = "c57ea4c6-1f34-4933-904d-7dddd77510c1"
+migrations_dir = "server/db/migrations/sqlite"
