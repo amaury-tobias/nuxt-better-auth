@@ -51,7 +51,11 @@ export default defineNuxtConfig({
   nitro: {
     virtual: { '#react-email-mock': 'export const render = () => ""' },
     alias: { '@react-email/render': '#react-email-mock' },
-    cloudflare: { observability: { logs: { enabled: true } } },
+    cloudflare: {
+      wrangler: {
+        observability: { enabled: true, logs: { enabled: true, invocation_logs: true } },
+      },
+    },
   },
 
   compatibilityDate: '2025-01-01',
