@@ -28,7 +28,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   runtimeConfig: {
-    betterAuthSecret: 'dev-secret-change-in-production-32+',
+    public: {
+      siteUrl: 'https://demo-nuxt-better-auth.onmax.me',
+    },
   },
 
   auth: {
