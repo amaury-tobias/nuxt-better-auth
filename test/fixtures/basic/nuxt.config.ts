@@ -19,5 +19,6 @@ export default defineNuxtConfig({
     '/protected': { auth: 'user' },
     '/admin': { auth: { user: { role: 'admin' } } },
     '/login': { auth: 'guest' },
+    '/custom-protected': { auth: { only: 'user', redirectTo: '/custom-login' } },
   },
 })

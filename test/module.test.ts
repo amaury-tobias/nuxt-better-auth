@@ -25,6 +25,12 @@ describe('nuxt-better-auth module', async () => {
       const html = await $fetch('/login')
       expect(html).toContain('Login')
     })
+
+    it('redirects to custom login when redirectTo is set', async () => {
+      const response = await fetch(url('/custom-protected'), { redirect: 'manual' })
+      expect(response.status).toBe(302)
+      expect(response.headers.get('location')).toContain('/custom-login')
+    })
   })
 
   describe('aPI protection', () => {
@@ -35,7 +41,7 @@ describe('nuxt-better-auth module', async () => {
   })
 
   describe('authenticated access', () => {
-    const testUser = { email: `test-${Date.now()}@example.com`, password: 'testpass123', name: 'Test' }
+    const testUser = { email: `test-${Date.now()}@example.com`, password: 'testpass123', name: 'Test User' }
     let cookies: string
 
     it('signup and access protected API', async () => {
@@ -53,6 +59,14 @@ describe('nuxt-better-auth module', async () => {
       expect(meRes.status).toBe(200)
       const data = await meRes.json()
       expect(data.email).toBe(testUser.email)
+    })
+
+    it('hydrates session on SSR', async () => {
+      // Fetch home page with auth cookies - should show user name, not "Not logged in"
+      const response = await fetch(url('/'), { headers: { cookie: cookies } })
+      const html = await response.text()
+      expect(html).toContain('Test User')
+      expect(html).not.toContain('Not logged in')
     })
   })
 })
