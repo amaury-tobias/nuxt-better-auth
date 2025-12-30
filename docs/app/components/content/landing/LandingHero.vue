@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useElementSize } from '@vueuse/core'
 import { motion, MotionConfig } from 'motion-v'
+import { ScrollAreaRoot, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaViewport } from 'reka-ui'
 // @ts-expect-error yaml is not typed
 import hero from './hero.yml'
 
@@ -167,32 +168,37 @@ function getCodeBlock(tab: { name: string, code: string }) {
 
                     <!-- Code content area -->
                     <div class="flex flex-col items-start px-1 text-sm mt-6">
-                      <div class="w-full overflow-hidden">
-                        <!-- All tabs rendered for SSR, animated with CSS -->
-                        <div class="relative">
-                          <div
-                            v-for="(tab, index) in tabs"
-                            :key="tab.name"
-                            class="flex items-start px-1 text-sm min-w-max transition-all duration-250 ease-out"
-                            :class="index === currentTab ? 'opacity-100 relative' : 'opacity-0 absolute inset-0 pointer-events-none'"
-                          >
-                            <!-- Line numbers gutter -->
+                      <ScrollAreaRoot class="w-full overflow-hidden">
+                        <ScrollAreaViewport class="w-full">
+                          <!-- All tabs rendered for SSR, animated with CSS -->
+                          <div class="relative">
                             <div
-                              aria-hidden="true"
-                              class="text-slate-600 select-none pl-2 pr-4 font-mono text-xs sm:text-sm leading-6"
+                              v-for="(tab, index) in tabs"
+                              :key="tab.name"
+                              class="flex items-start px-1 text-sm min-w-max transition-all duration-250 ease-out"
+                              :class="index === currentTab ? 'opacity-100 relative' : 'opacity-0 absolute inset-0 pointer-events-none'"
                             >
-                              <div v-for="i in lineCounts[index]" :key="i">
-                                {{ String(i).padStart(2, '0') }}
+                              <!-- Line numbers gutter -->
+                              <div
+                                aria-hidden="true"
+                                class="text-slate-600 select-none pl-2 pr-4 font-mono text-xs sm:text-sm leading-6"
+                              >
+                                <div v-for="i in lineCounts[index]" :key="i">
+                                  {{ String(i).padStart(2, '0') }}
+                                </div>
+                              </div>
+
+                              <!-- Code via MDC - all rendered during SSR -->
+                              <div class="hero-code">
+                                <MDC :value="getCodeBlock(tab)" tag="div" />
                               </div>
                             </div>
-
-                            <!-- Code via MDC - all rendered during SSR -->
-                            <div class="hero-code">
-                              <MDC :value="getCodeBlock(tab)" tag="div" />
-                            </div>
                           </div>
-                        </div>
-                      </div>
+                        </ScrollAreaViewport>
+                        <ScrollAreaScrollbar orientation="horizontal" class="flex select-none touch-none p-0.5 bg-stone-800/50 transition-colors h-2.5 flex-col">
+                          <ScrollAreaThumb class="flex-1 bg-stone-600 rounded-full relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[44px] before:min-h-[44px]" />
+                        </ScrollAreaScrollbar>
+                      </ScrollAreaRoot>
 
                       <!-- Demo CTA (bottom-right) -->
                       <motion.div layout class="self-end mt-3">
