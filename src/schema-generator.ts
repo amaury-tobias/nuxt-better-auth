@@ -135,7 +135,7 @@ function getMysqlType(type: string, fieldName: string): string {
   }
 }
 
-export async function loadUserAuthConfig(configPath: string): Promise<Partial<BetterAuthOptions>> {
+export async function loadUserAuthConfig(configPath: string, throwOnError = false): Promise<Partial<BetterAuthOptions>> {
   const { createJiti } = await import('jiti')
   const jiti = createJiti(import.meta.url, { interopDefault: true })
 
@@ -146,9 +146,15 @@ export async function loadUserAuthConfig(configPath: string): Promise<Partial<Be
       // Call with empty context - we only need plugins, not db
       return configFn({ runtimeConfig: {}, db: null })
     }
+    if (throwOnError) {
+      throw new Error('auth.config.ts must export default defineServerAuth(...)')
+    }
     return {}
   }
   catch (error) {
+    if (throwOnError) {
+      throw new Error(`Failed to load auth config: ${error instanceof Error ? error.message : error}`)
+    }
     consola.error('[@onmax/nuxt-better-auth] Failed to load auth config for schema generation. Schema may be incomplete:', error)
     return {}
   }

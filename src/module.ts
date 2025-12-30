@@ -57,7 +57,16 @@ export default defineNuxtModule<BetterAuthModuleOptions>({
       useDatabase: hasHubDb,
     }) as { redirects: { login: string, guest: string }, useDatabase: boolean }
 
-    nuxt.options.runtimeConfig.betterAuthSecret ||= process.env.BETTER_AUTH_SECRET || process.env.NUXT_BETTER_AUTH_SECRET || ''
+    const betterAuthSecret = process.env.BETTER_AUTH_SECRET || process.env.NUXT_BETTER_AUTH_SECRET || (nuxt.options.runtimeConfig.betterAuthSecret as string) || ''
+
+    if (!nuxt.options.dev && !betterAuthSecret) {
+      throw new Error('[nuxt-better-auth] BETTER_AUTH_SECRET is required in production. Set BETTER_AUTH_SECRET or NUXT_BETTER_AUTH_SECRET environment variable.')
+    }
+    if (betterAuthSecret && betterAuthSecret.length < 32) {
+      consola.warn('[nuxt-better-auth] BETTER_AUTH_SECRET should be at least 32 characters for security')
+    }
+
+    nuxt.options.runtimeConfig.betterAuthSecret = betterAuthSecret
 
     nuxt.options.runtimeConfig.auth = defu(nuxt.options.runtimeConfig.auth as Record<string, unknown>, {
       secondaryStorage: secondaryStorageEnabled,
@@ -84,6 +93,9 @@ export function createSecondaryStorage() {
 
     // conditional hub:db - use resolved path instead of hub:db alias to avoid ESM loader issues
     const hubDbPath = nuxt.options.alias['hub:db'] as string | undefined
+    if (hasHubDb && !hubDbPath) {
+      throw new Error('[nuxt-better-auth] hub:db alias not found. Ensure @nuxthub/core is loaded before this module.')
+    }
     const databaseCode = hasHubDb && hubDbPath
       ? `import { db, schema } from '${hubDbPath}'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
@@ -245,9 +257,10 @@ async function setupBetterAuthSchema(nuxt: any, serverConfigPath: string) {
   }
 
   // Generate schema immediately during module setup (before hub:db:schema:extend is called)
+  const isProduction = !nuxt.options.dev
   try {
     const configFile = `${serverConfigPath}.ts`
-    const userConfig = await loadUserAuthConfig(configFile)
+    const userConfig = await loadUserAuthConfig(configFile, isProduction)
 
     const extendedConfig: { plugins?: any[] } = {}
     await nuxt.callHook('better-auth:config:extend', extendedConfig)
@@ -270,6 +283,9 @@ async function setupBetterAuthSchema(nuxt: any, serverConfigPath: string) {
     consola.info(`Generated ${dialect} schema with ${Object.keys(tables).length} tables`)
   }
   catch (error) {
+    if (isProduction) {
+      throw error
+    }
     consola.error('Failed to generate schema:', error)
   }
 

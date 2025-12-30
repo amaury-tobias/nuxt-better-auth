@@ -22,6 +22,8 @@ export function useSidebarConfig() {
         { title: 'Installation', href: '/getting-started/installation', icon: 'i-solar-download-square-bold' },
         { title: 'Configuration', href: '/getting-started/configuration', icon: 'i-solar-settings-bold' },
         { title: 'Client Setup', href: '/getting-started/client-setup', icon: 'i-solar-monitor-bold' },
+        { title: 'Type Augmentation', href: '/getting-started/type-augmentation', icon: 'i-solar-code-file-bold' },
+        { title: 'Schema Generation', href: '/getting-started/schema-generation', icon: 'i-solar-database-bold' },
       ],
     },
     {

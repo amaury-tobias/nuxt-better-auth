@@ -1,7 +1,6 @@
 import type { AppAuthClient, AuthSession, AuthUser } from '#nuxt-better-auth'
 import { createAppAuthClient } from '#auth/client'
 import { computed, nextTick, useRequestHeaders, useRequestURL, useRuntimeConfig, useState, watch } from '#imports'
-import { consola } from 'consola'
 
 export interface SignOutOptions { onSuccess?: () => void | Promise<void> }
 
@@ -49,7 +48,9 @@ export function useUserSession() {
       () => clientSession.value,
       (newSession) => {
         if (newSession?.data?.session && newSession?.data?.user) {
-          session.value = newSession.data.session as AuthSession
+          // Filter out sensitive token field
+          const { token: _, ...safeSession } = newSession.data.session as AuthSession & { token?: string }
+          session.value = safeSession as AuthSession
           user.value = newSession.data.user as AuthUser
         }
         else if (!newSession?.isPending) {
@@ -155,10 +156,12 @@ export function useUserSession() {
         const fetchOptions = headers ? { headers } : undefined
         const query = options.force ? { disableCookieCache: true } : undefined
         const result = await client.getSession({ query }, fetchOptions)
-        const data = result.data as { session: AuthSession, user: AuthUser } | null
+        const data = result.data as { session: AuthSession & { token?: string }, user: AuthUser } | null
 
         if (data?.session && data?.user) {
-          session.value = data.session
+          // Filter out sensitive token field
+          const { token: _, ...safeSession } = data.session
+          session.value = safeSession as AuthSession
           user.value = data.user
         }
         else {
@@ -167,8 +170,7 @@ export function useUserSession() {
       }
       catch (error) {
         clearSession()
-        if (import.meta.dev)
-          consola.error('Failed to fetch auth session:', error)
+        console.error('[nuxt-better-auth] Failed to fetch session:', error)
       }
       finally {
         if (!authReady.value)

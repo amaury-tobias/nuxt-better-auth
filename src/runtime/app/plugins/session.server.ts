@@ -14,9 +14,11 @@ export default defineNuxtPlugin({
     if (event) {
       try {
         const headers = useRequestHeaders(['cookie'])
-        const data = await $fetch<{ session: AuthSession, user: AuthUser } | null>('/api/auth/get-session', { headers })
+        const data = await $fetch<{ session: AuthSession & { token?: string }, user: AuthUser } | null>('/api/auth/get-session', { headers })
         if (data?.session && data?.user) {
-          session.value = data.session
+          // Filter out sensitive token field from client state
+          const { token: _, ...safeSession } = data.session
+          session.value = safeSession as AuthSession
           user.value = data.user
         }
       }

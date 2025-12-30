@@ -33,7 +33,10 @@ export default defineEventHandler(async (event) => {
       countQuery,
     ])
 
-    return { sessions, total: totalResult[0]?.count ?? 0, page, limit }
+    // Redact sensitive token field
+    const safeSessions = sessions.map(s => ({ ...s, token: '[REDACTED]' }))
+
+    return { sessions: safeSessions, total: totalResult[0]?.count ?? 0, page, limit }
   }
   catch (error: unknown) {
     console.error('[DevTools] Fetch sessions failed:', error)
