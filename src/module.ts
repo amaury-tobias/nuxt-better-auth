@@ -284,7 +284,16 @@ async function setupBetterAuthSchema(nuxt: Nuxt, serverConfigPath: string, optio
     const plugins = [...(userConfig.plugins || []), ...(extendedConfig.plugins || [])]
 
     const { getAuthTables } = await import('better-auth/db')
-    const tables = getAuthTables({ plugins })
+    const tables = getAuthTables({
+      plugins,
+      secondaryStorage: options.secondaryStorage
+        ? {
+            get: async (_key: string) => null,
+            set: async (_key: string, _value: unknown, _ttl?: number) => {},
+            delete: async (_key: string) => {},
+          }
+        : undefined,
+    })
 
     // Auto-detect UUID mode from auth.config.ts
     const useUuid = userConfig.advanced?.database?.generateId === 'uuid'
