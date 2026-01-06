@@ -1,5 +1,4 @@
-import { defineNuxtPlugin } from '#imports'
-import { useUserSession } from '../composables/useUserSession'
+import { defineNuxtPlugin, useUserSession } from '#imports'
 
 export default defineNuxtPlugin(async (nuxtApp) => {
   const { fetchSession } = useUserSession()
